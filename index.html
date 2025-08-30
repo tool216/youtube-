@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Channel Art Generator</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4582947856582402"
+     crossorigin="anonymous"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ff6b6b, #6b6bff, #6bff6b);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        header {
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+        
+        .logo {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 30px;
+            gap: 30px;
+        }
+        
+        .upload-section {
+            flex: 1;
+            min-width: 300px;
+            background: linear-gradient(to bottom right, #6bff6b, #6b6bff);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .preview-section {
+            flex: 1;
+            min-width: 300px;
+            background: linear-gradient(to bottom right, #ff6b6b, #6b6bff);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: white;
+            text-align: center;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .upload-box {
+            border: 3px dashed white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .upload-box:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .upload-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+        
+        .upload-text {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        
+        #file-input {
+            display: none;
+        }
+        
+        .topic-input {
+            margin-top: 20px;
+        }
+        
+        .topic-input input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.3);
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .topic-input input:focus {
+            outline: none;
+            border-color: white;
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        .generate-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+        
+        .channel-art-preview {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .preview-placeholder {
+            text-align: center;
+            color: white;
+        }
+        
+        .preview-placeholder i {
+            font-size: 64px;
+            margin-bottom: 15px;
+            opacity: 0.7;
+        }
+        
+        .preview-placeholder p {
+            font-size: 18px;
+        }
+        
+        .download-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(to right, #00b09b, #96c93d);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .download-btn:active {
+            transform: translateY(0);
+        }
+        
+        .ads-section {
+            padding: 20px;
+            background: white;
+            margin: 20px 30px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .ad-label {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+        
+        .ad-container {
+            width: 100%;
+            min-height: 200px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            color: #888;
+        }
+        
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 30px;
+            background: linear-gradient(to right, #6b6bff, #ff6b6b);
+        }
+        
+        .feature {
+            flex: 1;
+            min-width: 250px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #ff4b2b;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #333;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .logo {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">ChannelArt Creator</div>
+            <div class="tagline">Create stunning YouTube channel art in seconds!</div>
+        </header>
+        
+        <div class="main-content">
+            <div class="upload-section">
+                <h2 class="section-title">Create Your Channel Art</h2>
+                <div class="upload-box" id="upload-box">
+                    <div class="upload-icon">📁</div>
+                    <div class="upload-text">Click to upload your photo</div>
+                    <div class="upload-subtext">or drag and drop here</div>
+                    <input type="file" id="file-input" accept="image/*">
+                </div>
+                
+                <div class="topic-input">
+                    <input type="text" id="topic-input" placeholder="Enter channel topic (e.g., Gaming, Cooking, Vlog)">
+                </div>
+                
+                <button class="generate-btn" id="generate-btn">Generate Channel Art</button>
+            </div>
+            
+            <div class="preview-section">
+                <h2 class="section-title">Your Channel Art</h2>
+                <div class="channel-art-preview" id="preview">
+                    <div class="preview-placeholder">
+                        <i>🎬</i>
+                        <p>Your channel art will appear here</p>
+                    </div>
+                </div>
+                <button class="download-btn" id="download-btn">Download Channel Art</button>
+            </div>
+        </div>
+        
+        <div class="ads-section">
+            <div class="ad-label">Advertisement</div>
+            <div class="ad-container">
+                <!-- Your AdSense ads will appear here -->
+                AdSense Advertisement
+            </div>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🎨</div>
+                <h3 class="feature-title">Easy to Use</h3>
+                <p>Upload your photo and get professional YouTube channel art in seconds</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">💯</div>
+                <h3 class="feature-title">High Quality</h3>
+                <p>Generate channel art that meets YouTube's recommended dimensions</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🚀</div>
+                <h3 class="feature-title">Fast & Free</h3>
+                <p>Create unlimited channel art for free without any watermarks</p>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 ChannelArt Creator. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('file-input');
+            const uploadBox = document.getElementById('upload-box');
+            const generateBtn = document.getElementById('generate-btn');
+            const downloadBtn = document.getElementById('download-btn');
+            const topicInput = document.getElementById('topic-input');
+            const preview = document.getElementById('preview');
+            
+            let uploadedImage = null;
+            
+            // Upload functionality
+            uploadBox.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            uploadBox.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.style.background = 'rgba(255, 255, 255, 0.4)';
+            });
+            
+            uploadBox.addEventListener('dragleave', function() {
+                this.style.background = 'rgba(255, 255, 255, 0.2)';
+            });
+            
+            uploadBox.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.style.background = 'rgba(255, 255, 255, 0.2)';
+                
+                if (e.dataTransfer.files.length) {
+                    fileInput.files = e.dataTransfer.files;
+                    handleFileUpload(e.dataTransfer.files[0]);
+                }
+            });
+            
+            fileInput.addEventListener('change', function() {
+                if (this.files.length) {
+                    handleFileUpload(this.files[0]);
+                }
+            });
+            
+            function handleFileUpload(file) {
+                if (!file.type.match('image.*')) {
+                    alert('Please upload an image file');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    uploadedImage = e.target.result;
+                    
+                    // Show preview
+                    uploadBox.innerHTML = `
+                        <div style="text-align: center; color: white;">
+                            <img src="${uploadedImage}" style="max-width: 100%; max-height: 150px; border-radius: 10px; margin-bottom: 10px;">
+                            <p>Image uploaded successfully!</p>
+                            <p>Click to change</p>
+                        </div>
+                    `;
+                };
+                
+                reader.readAsDataURL(file);
+            }
+            
+            // Generate channel art
+            generateBtn.addEventListener('click', function() {
+                const topic = topicInput.value.trim();
+                
+                if (!uploadedImage) {
+                    alert('Please upload an image first');
+                    return;
+                }
+                
+                if (!topic) {
+                    alert('Please enter a channel topic');
+                    return;
+                }
+                
+                // Simulate channel art generation
+                generateBtn.textContent = 'Generating...';
+                
+                setTimeout(() => {
+                    preview.innerHTML = `
+                        <div style="width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('${uploadedImage}'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; flex-direction: column; color: white; text-align: center; padding: 20px;">
+                            <h2 style="font-size: 32px; margin-bottom: 15px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">${topic} Channel</h2>
+                            <p style="font-size: 18px; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">Awesome content about ${topic}</p>
+                            <div style="position: absolute; bottom: 20px; right: 20px; font-size: 14px; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">@${topic.toLowerCase()}channel</div>
+                        </div>
+                    `;
+                    
+                    generateBtn.textContent = 'Generate Channel Art';
+                    
+                    // Show success message
+                    alert('Channel art generated successfully! Click download to save your image.');
+                }, 1500);
+            });
+            
+            // Download functionality
+            downloadBtn.addEventListener('click', function() {
+                if (preview.querySelector('img') || preview.querySelector('div')) {
+                    alert('In a real application, this would download your channel art. For now, you can right-click and "Save Image".');
+                } else {
+                    alert('Please generate channel art first');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
